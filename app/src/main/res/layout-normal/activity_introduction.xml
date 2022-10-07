@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/mpvStyle"
+    tools:context=".IntroductionActivity">
+
+    <WebView
+        android:id="@+id/webview"
+        style="@style/mpStyle" />
+</LinearLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    style="@style/mwStyle"
+    android:layout_margin="@dimen/a10"
+    android:background="@drawable/button_box"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/id_Name"
+        style="@style/wpStyle"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="start"
+        android:shadowColor="@color/white"
+        android:shadowRadius="20"
+        android:padding="@dimen/a10"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textSize24" />
+
+    <ImageView
+        style="@style/wpStyle"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:padding="@dimen/a10"
+        android:src="@drawable/chevron_right"
+
+        />
+</RelativeLayout>
