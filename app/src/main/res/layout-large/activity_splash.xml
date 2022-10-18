@@ -4,10 +4,6 @@
     android:background="@color/black"
     android:gravity="center">
 
-    <ImageView
-        android:id="@+id/img"
-        style="@style/wpStyle"
-        android:src="@drawable/cpp_icon" />
 
     <TextView
         android:id="@+id/text"

@@ -8,8 +8,9 @@ import android.os.Handler;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 public class SplashActivity extends AppCompatActivity {
-    ImageView img;
     TextView text;
 
 
@@ -17,8 +18,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        getSupportActionBar().hide();
-        img = findViewById(R.id.img);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         text = findViewById(R.id.text);
         new Handler().postDelayed(() -> {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
