@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/mpvStyle">
 
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:id="@+id/adView"
-        style="@style/wpStyle"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/bannerId" />
+        android:orientation="vertical" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"

@@ -1,17 +1,18 @@
 package com.sgtech.learncppbasic;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
+import com.vungle.warren.AdConfig;
+import com.vungle.warren.Banners;
+import com.vungle.warren.InitCallback;
+import com.vungle.warren.LoadAdCallback;
+import com.vungle.warren.Vungle;
+import com.vungle.warren.error.VungleException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     List<DataHolder> list;
     RecyclerView recyclerView;
     RecyclerAdapter adapter;
-    AdView adview;
+    LinearLayout adview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,48 +30,45 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         list = new ArrayList<>();
         addList();
+        adview = findViewById(R.id.adView);
         recyclerView = findViewById(R.id.recycler);
         adapter = new RecyclerAdapter(this, list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        MobileAds.initialize(this);
-        adview = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adview.loadAd(adRequest);
-        adview.setAdListener(new AdListener() {
+        Vungle.init("633af9342b028cfda77c7e28", getApplicationContext(), new InitCallback() {
             @Override
-            public void onAdClicked() {
-                super.onAdClicked();
+            public void onSuccess() {
+                loadAd();
             }
 
             @Override
-            public void onAdClosed() {
-                super.onAdClosed();
+            public void onError(VungleException exception) {
+
             }
 
             @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                super.onAdFailedToLoad(loadAdError);
-                onAdLoaded();
-            }
+            public void onAutoCacheAdAvailable(String placementId) {
 
-            @Override
-            public void onAdImpression() {
-                super.onAdImpression();
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
             }
         });
 
 
+    }
+
+    private void loadAd() {
+        Banners.loadBanner("BANNERAD-9356735", AdConfig.AdSize.BANNER, new LoadAdCallback() {
+            @Override
+            public void onAdLoad(String placementId) {
+                if (Banners.canPlayAd("BANNERAD-9356735", AdConfig.AdSize.BANNER)) {
+                    adview.addView(Banners.getBanner("BANNERAD-9356735", AdConfig.AdSize.BANNER, null));
+                }
+            }
+
+            @Override
+            public void onError(String placementId, VungleException exception) {
+
+            }
+        });
     }
 
     public void addList() {

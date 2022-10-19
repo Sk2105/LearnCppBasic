@@ -8,20 +8,17 @@ import android.os.Handler;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
+import com.vungle.warren.InitCallback;
+import com.vungle.warren.LoadAdCallback;
+import com.vungle.warren.PlayAdCallback;
+import com.vungle.warren.Vungle;
+import com.vungle.warren.error.VungleException;
 
 import java.util.Objects;
 
 public class IntroductionActivity extends AppCompatActivity {
     WebView webView;
     String url = "https://www.w3schools.com/cpp/";
-    RewardedInterstitialAd ad;
-    AdRequest adRequest;
 
 
     @Override
@@ -30,29 +27,38 @@ public class IntroductionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_introduction);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         webView = findViewById(R.id.webview);
-        adRequest = new AdRequest.Builder().build();
         String title = getIntent().getStringExtra("title");
         String load = getIntent().getStringExtra("String");
         getSupportActionBar().setTitle(title);
         webView.loadUrl(url + load);
-        new Handler().postDelayed(this::loadAd, 4000);
+        Vungle.init("633af9342b028cfda77c7e28", getApplicationContext(), new InitCallback() {
+            @Override
+            public void onSuccess() {
+                new Handler().postDelayed(() -> loadAd(), 4000);
+            }
+
+            @Override
+            public void onError(VungleException exception) {
+            }
+
+            @Override
+            public void onAutoCacheAdAvailable(String placementId) {
+
+            }
+        });
+
     }
 
 
     @Override
     public void onBackPressed() {
         try {
-            if (ad != null) {
-                ad.show(IntroductionActivity.this, rewardItem -> {
-
-                });
-            }
+            showAd();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             finish();
         }
-
     }
 
     @Override
@@ -65,48 +71,68 @@ public class IntroductionActivity extends AppCompatActivity {
     }
 
     public void loadAd() {
-        RewardedInterstitialAd.load(this, "ca-app-pub-3397903282571414/3199206611",
-                new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                        ad = null;
+        Vungle.loadAd("REWARDEDAD-2189236", new LoadAdCallback() {
+            @Override
+            public void onAdLoad(String placementId) {
 
-                    }
+            }
 
-                    @Override
-                    public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
-                        super.onAdLoaded(rewardedInterstitialAd);
-                        ad = rewardedInterstitialAd;
-                        ad.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdClicked() {
-                                super.onAdClicked();
-                            }
+            @Override
+            public void onError(String placementId, VungleException exception) {
 
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                super.onAdDismissedFullScreenContent();
-                            }
+            }
+        });
+    }
 
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                super.onAdFailedToShowFullScreenContent(adError);
-                                onAdLoaded(ad);
-                            }
+    public void showAd() {
+        if (Vungle.canPlayAd("REWARDEDAD-2189236")) {
+            Vungle.playAd("REWARDEDAD-2189236", null, new PlayAdCallback() {
+                @Override
+                public void creativeId(String creativeId) {
 
-                            @Override
-                            public void onAdImpression() {
-                                super.onAdImpression();
-                            }
+                }
 
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                super.onAdShowedFullScreenContent();
-                            }
-                        });
-                    }
-                });
+                @Override
+                public void onAdStart(String placementId) {
+
+                }
+
+                @Override
+                public void onAdEnd(String placementId, boolean completed, boolean isCTAClicked) {
+
+                }
+
+                @Override
+                public void onAdEnd(String placementId) {
+
+                }
+
+                @Override
+                public void onAdClick(String placementId) {
+
+                }
+
+                @Override
+                public void onAdRewarded(String placementId) {
+
+                }
+
+                @Override
+                public void onAdLeftApplication(String placementId) {
+
+                }
+
+                @Override
+                public void onError(String placementId, VungleException exception) {
+
+                }
+
+                @Override
+                public void onAdViewed(String placementId) {
+
+                }
+            });
+        }
     }
 
 
