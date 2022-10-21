@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.webkit.WebView;
+
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -41,11 +42,7 @@ public class IntroductionActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         try {
-            if(ad != null){
-                ad.show(IntroductionActivity.this, rewardItem -> {
-
-                });
-            }
+            showAd();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -74,39 +71,45 @@ public class IntroductionActivity extends AppCompatActivity {
             @Override
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                 super.onAdLoaded(rewardedAd);
-                if (rewardedAd != null) {
-                    ad = rewardedAd;
-                    ad.setFullScreenContentCallback(new FullScreenContentCallback() {
-                        @Override
-                        public void onAdClicked() {
-                            super.onAdClicked();
-                        }
+                ad = rewardedAd;
+                ad.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdClicked() {
+                        super.onAdClicked();
+                    }
 
-                        @Override
-                        public void onAdDismissedFullScreenContent() {
-                            super.onAdDismissedFullScreenContent();
-                        }
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent();
+                    }
 
-                        @Override
-                        public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                            super.onAdFailedToShowFullScreenContent(adError);
-                        }
+                    @Override
+                    public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                        super.onAdFailedToShowFullScreenContent(adError);
+                    }
 
-                        @Override
-                        public void onAdImpression() {
-                            super.onAdImpression();
-                        }
+                    @Override
+                    public void onAdImpression() {
+                        super.onAdImpression();
+                    }
 
-                        @Override
-                        public void onAdShowedFullScreenContent() {
-                            super.onAdShowedFullScreenContent();
-                        }
-                    });
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        super.onAdShowedFullScreenContent();
+                    }
+                });
 
-                }
+
             }
         });
     }
 
+    public void showAd() {
+        if (ad != null) {
+            ad.show(IntroductionActivity.this, rewardItem -> {
+
+            });
+        }
+    }
 
 }

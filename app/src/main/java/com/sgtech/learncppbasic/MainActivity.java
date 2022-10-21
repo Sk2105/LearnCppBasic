@@ -1,6 +1,7 @@
 package com.sgtech.learncppbasic;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         addList();
         recyclerView = findViewById(R.id.recycler);
         adapter = new RecyclerAdapter(this, list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setAdapter(adapter);
         MobileAds.initialize(this);
         adview = findViewById(R.id.adView);
